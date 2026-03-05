@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ hotel.name }} | Details</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 40px; }
+        .detail-card {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            border-top: 6px solid #1e3c72;
+        }
+        .header { background: #1e3c72; color: white; padding: 20px; text-align: center; }
+        .body { padding: 30px; }
+        .info-item { margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .label { font-size: 12px; color: #888; text-transform: uppercase; }
+        .value { font-size: 18px; color: #333; font-weight: 500; display: block; }
+        .footer { padding: 0 30px 30px; display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 12px; text-align: center; text-decoration: none; border-radius: 8px; font-weight: bold; }
+        .btn-rooms { background: #1e3c72; color: white; }
+        .btn-back { background: #f0f0f0; color: #555; }
+    </style>
+</head>
+<body>
+
+    <div class="detail-card">
+        <div class="header"><h2 style="margin:0;">Hotel Profile</h2></div>
+        <div class="body">
+            <div class="info-item">
+                <span class="label">Name</span>
+                <span class="value">{{ hotel.name }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Location</span>
+                <span class="value">📍 {{ hotel.city }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Type</span>
+                <span class="value">🏨 {{ hotel.hotel_type }}</span>
+            </div>
+        </div>
+        <div class="footer">
+            <a href="{% url 'hotel_list' %}" class="btn btn-back">Back</a>
+            
+        </div>
+    </div>
+
+</body>
+</html>

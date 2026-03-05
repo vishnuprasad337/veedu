@@ -1,0 +1,85 @@
+{% now "Y-m-d" as today %}
+
+<div style="max-width:900px; margin:auto; font-family:Arial;">
+
+    <!-- USER DETAILS CARD -->
+    <div style="
+        background:white;
+        padding:25px;
+        border-radius:12px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.08);
+        margin-bottom:30px;
+    ">
+        <h2 style="margin-top:0; color:#0072ff;">
+            Welcome, {{ user.user_name }}
+        </h2>
+
+        <div style="
+            display:grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap:15px;
+            font-size:14px;
+        ">
+            <div><strong>Email:</strong> {{ user.email }}</div>
+            <div><strong>Phone:</strong> {{ user.phonenumber }}</div>
+            <div><strong>Address:</strong> {{ user.Address }}</div>
+            <div><strong>Member Since:</strong> {{ user.created_at|date:"M d, Y" }}</div>
+        </div>
+    </div>
+
+
+    <!-- BOOKINGS SECTION -->
+    <h3 style="margin-bottom:15px;">My Bookings</h3>
+
+    {% if user.bookings.all %}
+        <div style="display:grid; gap:20px;">
+
+            {% for booking in user.bookings.all %}
+            <div style="
+                background:white;
+                border-radius:12px;
+                padding:20px;
+                box-shadow:0 4px 12px rgba(0,0,0,0.08);
+            ">
+
+                <!-- Booking Header -->
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="font-size:18px; font-weight:bold; color:#0072ff;">
+                        {{ booking.hotel.name }}
+                    </div>
+
+                    {% if booking.check_out|date:"Y-m-d" < today %}
+                        <div style="background:#dc3545; color:white; padding:5px 12px; border-radius:20px; font-size:12px;">
+                            Completed
+                        </div>
+                    {% else %}
+                        <div style="background:#28a745; color:white; padding:5px 12px; border-radius:20px; font-size:12px;">
+                            Active
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Booking Details -->
+                <div style="
+                    display:grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap:10px;
+                    margin-top:15px;
+                    font-size:14px;
+                ">
+                    <div><strong>Room Type:</strong> {{ booking.room_type }}</div>
+                    <div><strong>Rooms Booked:</strong> {{ booking.count }}</div>
+                    <div><strong>Check-In:</strong> {{ booking.check_in|date:"M d, Y" }}</div>
+                    <div><strong>Check-Out:</strong> {{ booking.check_out|date:"M d, Y" }}</div>
+                    <div><strong>Total Amount:</strong> ₹ {{ booking.total_amount }}</div>
+                </div>
+
+            </div>
+            {% endfor %}
+
+        </div>
+    {% else %}
+        <p>No bookings yet.</p>
+    {% endif %}
+
+</div>

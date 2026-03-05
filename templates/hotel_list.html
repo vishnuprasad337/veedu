@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hotel Management | Cards</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f4f7f6;
+            margin: 0;
+            padding: 40px;
+        }
+
+        h2 { text-align: center; color: #1e3c72; margin-bottom: 30px; }
+
+        
+        .hotel-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .hotel-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+        }
+
+        .hotel-card:hover { transform: translateY(-5px); }
+
+        .card-body { padding: 20px; text-align: center; }
+        
+        .hotel-title { font-size: 20px; font-weight: bold; color: #333; margin: 10px 0; }
+        
+        .hotel-addr { color: #777; font-size: 14px; margin-bottom: 20px; }
+
+        .card-footer {
+            display: flex;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .btn-details { color: #1e3c72; background: #fff; }
+        
+        .btn-rooms { color: #fff; background: #1e3c72; }
+
+        .btn-details:hover { background: #f0f4ff; }
+        
+        .btn-rooms:hover { background: #2a5298; }
+
+        .back-home { display: block; text-align: center; margin-top: 40px; color: #1e3c72; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <h2>🏨 Hotel Directory</h2>
+
+    <div class="hotel-container">
+        {% for hotel in hotels %}
+        <div class="hotel-card">
+            <div class="card-body">
+                <div class="hotel-title">{{ hotel.name }}</div>
+                <div class="hotel-addr">📍 {{ hotel.Address }}</div>
+            </div>
+            
+            <div class="card-footer">
+                <a href="{% url 'hotel_details' hotel.id %}" class="btn btn-details">View Details</a>
+                <a href="{% url 'hotel_rooms' hotel.id %}" class="btn btn-rooms">View Room</a>
+            </div>
+        </div>
+        {% empty %}
+        <p style="text-align: center; width: 100%;">No hotels registered yet.</p>
+        {% endfor %}
+    </div>
+
+    <a href="{% url 'home' %}" class="back-home">⬅ Back to Home</a>
+
+</body>
+</html>

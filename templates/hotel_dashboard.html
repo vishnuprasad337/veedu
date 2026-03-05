@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Dashboard</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+        }
+        .box {
+            margin-top: 80px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 15px;
+            background-color: #1e3c72;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #16325c;
+        }
+    </style>
+</head>
+<body>
+
+<h2>🏨 Welcome, {{ hotel.name }}</h2>
+
+<div class="box">
+
+    <a href="{}">
+        <button></button>
+    </a>
+
+    <a href="{% url 'hotel_bookings_dashboard' %}">
+        <button>View Bookings</button>
+    </a>
+
+    <br><br>
+    <a href="{}">
+        <button>Logout</button>
+    </a>
+
+</div>
+
+</body>
+</html>

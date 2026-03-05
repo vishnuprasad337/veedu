@@ -1,0 +1,38 @@
+<div class="booking-card" style="max-width: 450px; margin: 50px auto; padding: 25px; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+    <h2 style="color: #1e3c72;">Complete Your Booking</h2>
+    <p>Room: <strong>{{ room.room_type }}</strong> | Price: <strong>₹{{ room.price }}</strong></p>
+
+    <form method="POST" action="{% url 'process_booking' room.id %}">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 15px;">
+            <label>Full Name</label>
+            <input type="text" name="name" required style="width:100%; padding:8px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Email</label>
+            <input type="email" name="email" required style="width:100%; padding:8px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Number of Rooms</label>
+            <input type="number" name="count" value="1" min="1" max="{{ room.available_rooms }}" required style="width:100%; padding:8px;">
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+            <div style="flex:1;">
+                <label>Check In</label>
+                <input type="date" name="check_in" required style="width:100%; padding:8px;">
+            </div>
+            <div style="flex:1;">
+                <label>Check Out</label>
+                <input type="date" name="check_out" required style="width:100%; padding:8px;">
+            </div>
+        </div>
+
+        <button type="submit" style="width:100%; padding:12px; background:#1e3c72; color:white; border:none; border-radius:6px; cursor:pointer;">
+            Confirm & Pay
+        </button>
+    </form>
+</div>

@@ -1,0 +1,135 @@
+<div class="container" style="padding: 20px; font-family: 'Segoe UI', sans-serif;">
+    <h2 style="text-align: center; color: #1e3c72;">📖 Bookings for {{ hotel.name }}</h2>
+    
+    <div class="booking-grid">
+        {% now "Y-m-d" as today_str %}
+        {% for booking in bookings %}
+        
+        <div class="booking-card {% if booking.check_out|date:'Y-m-d' < today_str %}expired{% endif %}">
+            <div class="card-header">
+                <span class="booking-id">#{{ booking.id }}</span>
+                <span class="status-badge">
+                    {% if booking.check_out|date:'Y-m-d' < today_str %}
+                        Completed
+                    {% else %}
+                        Active
+                    {% endif %}
+                </span>
+            </div>
+
+            <div class="card-body">
+                <div class="guest-name">{{ booking.name }}</div>
+                <div class="guest-email">{{ booking.email }}</div>
+                
+                <hr>
+                
+                <div class="details-row">
+                    <span><strong>Type:</strong> {{ booking.room_type }}</span>
+                    <span><strong>Rooms:</strong> {{ booking.count }}</span>
+                </div>
+                
+                <div class="date-row">
+                    <div class="date-box">
+                        <small>Check In</small>
+                        <div>{{ booking.check_in|date:"M d, Y" }}</div>
+                    </div>
+                    <div class="date-box">
+                        <small>Check Out</small>
+                        <div>{{ booking.check_out|date:"M d, Y" }}</div>
+                    </div>
+                </div>
+
+                <div class="financial-row">
+                    <div>
+                        <small>Balance Rooms</small>
+                        <div class="val">{{ booking.balance_rooms }}</div>
+                    </div>
+                    <div>
+                        <small>Total Amount</small>
+                        <div class="val" style="color: #27ae60; font-size: 1.2rem;">${{ booking.total_amount }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p style="text-align: center; width: 100%;">No bookings found for this hotel.</p>
+        {% endfor %}
+    </div>
+
+    <br>
+    <div style="text-align: center;">
+        <a href="{% url 'hotel_dashboard' %}" style="text-decoration: none; color: #1e3c72; font-weight: bold;">
+            ⬅ Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<style>
+    .booking-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .booking-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        border-left: 6px solid #1e3c72; 
+        transition: 0.3s;
+    }
+
+    
+    .booking-card.expired {
+        border-left: 6px solid #95a5a6; /* Grey for past */
+        background-color: #f9f9f9;
+        opacity: 0.85;
+    }
+
+    .booking-card.expired .status-badge {
+        background: #95a5a6;
+    }
+
+    .card-header {
+        padding: 15px 20px 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .booking-id { font-size: 0.8rem; color: #888; font-weight: bold; }
+
+    .status-badge {
+        background: #1e3c72;
+        color: white;
+        font-size: 10px;
+        padding: 3px 8px;
+        border-radius: 20px;
+        text-transform: uppercase;
+    }
+
+    .card-body { padding: 0 20px 20px; }
+
+    .guest-name { font-size: 1.2rem; font-weight: bold; color: #333; }
+    .guest-email { font-size: 0.9rem; color: #777; margin-bottom: 10px; }
+
+    .details-row, .date-row, .financial-row {
+        display: flex;
+        justify-content: space-between;
+        margin: 15px 0;
+    }
+
+    .date-box small, .financial-row small {
+        display: block;
+        color: #888;
+        text-transform: uppercase;
+        font-size: 10px;
+        letter-spacing: 1px;
+    }
+
+    .val { font-weight: bold; }
+    
+    hr { border: 0; border-top: 1px solid #eee; margin: 15px 0; }
+</style>
