@@ -356,25 +356,22 @@ def process_booking(request, pk):
     room = get_object_or_404(Room, id=pk)
 
     if request.method == 'POST':
-      
         name = request.POST.get('name')
         email = request.POST.get('email')
         count = int(request.POST.get('count'))
         check_in_str = request.POST.get('check_in')
         check_out_str = request.POST.get('check_out')
 
-      
         check_in = datetime.strptime(check_in_str, '%Y-%m-%d').date()
         check_out = datetime.strptime(check_out_str, '%Y-%m-%d').date()
-        if check_out<check_in:
-            messages.error(request,"check_out day should be after check_in")
+
+        if check_out < check_in:
+            messages.error(request, "Check-out day should be after check-in")
             return render(request, 'booking.html', {'room': room})
 
-        
         duration = (check_out - check_in).days
         days = max(duration, 1)
 
-        
         if duration <= 0:
             messages.error(request, "Check-out must be after check-in.")
             return render(request, 'booking.html', {'room': room})
@@ -382,19 +379,20 @@ def process_booking(request, pk):
         if room.available_rooms < count:
             messages.error(request, f"Only {room.available_rooms} rooms available.")
             return render(request, 'booking.html', {'room': room})
-       
+
         total_amount = days * float(room.price) * count
-        
-       
-        room.available_rooms -= count
-    
-        room.save()
-        current_balace=room.available_rooms
+
         try:
             user_instance = User.objects.get(email=email)
         except User.DoesNotExist:
-            messages.error(request, "Please signup before booking.")
+            messages.error(request, "Email not registered. Please signup before booking.")
             return render(request, 'booking.html', {'room': room})
+
+       
+        room.available_rooms -= count
+        room.save()
+        current_balance = room.available_rooms
+
         
         Hotelbooking.objects.create(
             user=user_instance,
@@ -407,15 +405,16 @@ def process_booking(request, pk):
             check_in=check_in,
             check_out=check_out,
             total_amount=total_amount,
-            balance_rooms=current_balace
+            balance_rooms=current_balance
         )
+
         
+        request.session['hotel_id'] = room.hotel.id
 
         messages.success(request, f"Booking successful! Total: ₹{total_amount}")
-        return redirect('hotel_dashboard')
+        return redirect('user_details')  
 
-    return render(request,'booking.html', {'room': room})
-
+    return render(request, 'booking.html', {'room': room})
 def signup(request):
     if request.method == "POST":
        
@@ -447,5 +446,4 @@ def signup(request):
 
     
     return render(request, "signup.html")
-
 
