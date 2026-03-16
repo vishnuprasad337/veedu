@@ -37,7 +37,7 @@ urlpatterns=[
     path('api/hotels/<int:hotel_id>/bookings/', BookingListhotelAPI.as_view()),
     path('hotel/<int:pk>/all/', HotelFullAPIView.as_view()),
     path('bookingapp/api/', BookingAppFullAPIView.as_view()),
-
+    path("connect-request/",ConnectRequest.as_view()),
     
 ]
 
