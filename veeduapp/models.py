@@ -87,5 +87,19 @@ class Hotelbooking(models.Model):
     def __str__(self):
         return f"{self.name} {self.email}"
 
-    
+class ConnectionRequest(models.Model):
+
+    hotel_name = models.CharField(max_length=100)
+
+    callback_url = models.URLField()
+
+    api_key = models.CharField(max_length=200,blank=True,null=True)
+
+    status = models.CharField(max_length=20,default="pending"
+        )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.hotel_name
     

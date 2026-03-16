@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import User,Hotel,Hotelbooking,Room
+from .models import User,Hotel,Hotelbooking,Room,ConnectionRequest
 from django.db.models import Sum
 from .serializers import UserSerializers,HotelSerializers,BookingSerializers,RoomSerializers,HotelDetailsSerializers
 from django.shortcuts import render,get_object_or_404,redirect
@@ -447,3 +447,13 @@ def signup(request):
     
     return render(request, "signup.html")
 
+class ConnectRequest(APIView):
+    def post(self,request):
+        hotel_name=request.data.get("hotel_name")
+        callback=request.data.get("callback_urls")
+        ConnectionRequest.objects.create(
+            hotel_name=hotel_name,
+            callback_url=callback
+        )
+
+        return Response({"message":"Request received"})
