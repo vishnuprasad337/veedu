@@ -35,3 +35,6 @@ def approve_connection(modeladmin, request, queryset):
             )
         except:
             pass
+class ConnectionRequestAdmin(admin.ModelAdmin):
+    list_display = ['hotel_name', 'status', 'callback_url', 'created_at']  
+    actions = [approve_connection]   
