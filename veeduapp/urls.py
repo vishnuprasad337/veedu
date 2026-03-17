@@ -38,6 +38,7 @@ urlpatterns=[
     path('hotel/<int:pk>/all/', HotelFullAPIView.as_view()),
     path('bookingapp/api/', BookingAppFullAPIView.as_view()),
     path("connect-request/",ConnectRequest.as_view()),
-    
+    path("connection-status/", ConnectionStatus.as_view()),
 ]
+
 

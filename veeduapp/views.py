@@ -448,12 +448,29 @@ def signup(request):
     return render(request, "signup.html")
 
 class ConnectRequest(APIView):
-    def post(self,request):
-        hotel_name=request.data.get("hotel_name")
-        callback=request.data.get("callback_url")
+    def post(self, request):
+
+        hotel_name = request.data.get("hotel_name")
+        name = request.data.get("name")
+        url = request.data.get("url")
+        api_key = request.data.get("api_key")
+
         ConnectionRequest.objects.create(
             hotel_name=hotel_name,
-            callback_url=callback
+            website_name=name,
+            api_url=url,
+            api_key=api_key,
+            status="pending"
         )
 
-        return Response({"message":"Request received"})
+        return Response({"message": "Request received"})
+class ConnectionStatus(APIView):
+    def get(self,request):
+        name=request.GET.get("name")
+        req = ConnectionRequest.objects.filter(website_name=name).first()
+        if req:
+            return Response({
+                "status": req.status
+            })
+
+        return Response({"status": "pending"})
