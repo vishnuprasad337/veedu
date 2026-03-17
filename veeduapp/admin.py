@@ -1,23 +1,22 @@
 from django.contrib import admin
+from django.conf import settings
+import requests
+# Import all your models
 from .models import User, Hotel, Room, RoomNumber, Hotelbooking, ConnectionRequest
 
+# 1. Register standard models
 admin.site.register(User)
 admin.site.register(Hotel)
 admin.site.register(Room)
 admin.site.register(RoomNumber)
 admin.site.register(Hotelbooking)
-admin.site.register(ConnectionRequest)
-from django.contrib import admin
-from django.conf import settings
-import requests
 
 
 @admin.action(description="Approve connection")
 def approve_connection(modeladmin, request, queryset):
-
     for obj in queryset:
-
-        api_key = settings.MY_API_KEY
+       
+        api_key = getattr(settings, 'MY_API_KEY', 'default_key_123')
 
         obj.api_key = api_key
         obj.status = "approved"
@@ -31,10 +30,15 @@ def approve_connection(modeladmin, request, queryset):
                     "hotel_name": obj.hotel_name,
                     "api_key": api_key
                 },
-                timeout=5
+                timeout=10
             )
-        except:
-            pass
-class ConnectionRequestAdmin(admin.ModelAdmin):
-    list_display = ['hotel_name', 'status', 'callback_url', 'created_at']  
-    actions = [approve_connection]   
+        except Exception as e:
+            print(f"Callback failed: {e}")
+
+
+class ConnectionRequestAdmin(admin.ModelAdmin):# Ensure 'created_at' exists in your models.py, otherwise remove it from this list
+    list_display = ['hotel_name', 'status', 'callback_url'] 
+    actions = [approve_connection]
+
+
+admin.site.register(ConnectionRequest, ConnectionRequestAdmin)
