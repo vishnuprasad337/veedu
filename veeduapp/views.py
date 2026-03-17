@@ -450,7 +450,7 @@ def signup(request):
 class ConnectRequest(APIView):
     def post(self,request):
         hotel_name=request.data.get("hotel_name")
-        callback=request.data.get("callback_urls")
+        callback=request.data.get("callback_url")
         ConnectionRequest.objects.create(
             hotel_name=hotel_name,
             callback_url=callback
